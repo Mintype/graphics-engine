@@ -25,7 +25,11 @@ public class Main {
                 new Vertex(-1, -1, 1)
         };
 
-        Cube cube = new Cube(cubeVertices);
+        int[] indices = new int[]{
+
+        };
+
+        Cube cube = new Cube(cubeVertices, indices);
 
         scene.addCube(cube);
 

@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Scene extends JPanel implements Runnable {
     private ArrayList<Cube> cubes;
@@ -63,8 +64,20 @@ public class Scene extends JPanel implements Runnable {
         g.setColor(Color.BLUE);
         for (Cube cube : cubes) {
             Vertex2D[] vertices = cube.getVertices2D();
-            for(int i = 0; i < vertices.length; i++) {
+            int[] indices = cube.getIndices();
+            for(int i = 0; i < indices.length - 3; i+=3) {
+                Vertex2D v1 = vertices[indices[i]];
+                Vertex2D v2 = vertices[indices[i+1]];
+                Vertex2D v3 = vertices[indices[i+2]];
 
+                int[] xPoints = new int[]{ v1.getX(), v2.getX(), v3.getX() };
+                int[] yPoints = new int[]{ v1.getY(), v2.getY(), v3.getY() };
+
+                System.out.println(Arrays.toString(xPoints));
+                System.out.println(Arrays.toString(yPoints));
+                System.out.println();
+
+                g.drawPolygon(xPoints, yPoints, 3);
             }
         }
 
