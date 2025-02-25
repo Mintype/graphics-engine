@@ -1,6 +1,9 @@
 package org.mintype;
 
 import org.mintype.engine.*;
+import org.mintype.engine.Window;
+
+import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,7 +18,7 @@ public class Main {
 //        scene.addTriangle(triangle);
 
         Vertex[] cubeVertices = new Vertex[]{
-                new Vertex(-1, 1, -1-2),
+                new Vertex(-1, 1, -1-2, Color.RED),
                 new Vertex(1, 1, -1-2),
                 new Vertex(1, -1, -1-2),
                 new Vertex(-1, -1, -1-2),
@@ -42,9 +45,9 @@ public class Main {
         window.setVisible(true);
 
         while (true) {
-            cube.rotateY(1);
+            cube.rotateY(15);
             try {
-                Thread.sleep(100);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

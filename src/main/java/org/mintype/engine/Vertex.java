@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class Vertex {
     private float x, y, z;      // Position (xyz)
-    private float r, g, b, a;   // Color (rgba)
+    private int r, g, b, a;   // Color (rgba)
 
     public Vertex(float x, float y, float z) {
         this.x = x;
@@ -12,7 +12,19 @@ public class Vertex {
         this.z = z;
     }
 
-    public Vertex(float x, float y, float z, float r, float g, float b, float a) {
+    public Vertex(float x, float y, float z, Color color) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+
+        this.r = color.getRed();
+        this.g = color.getGreen();
+        this.b = color.getBlue();
+        this.a = color.getAlpha();
+
+    }
+
+    public Vertex(float x, float y, float z, int r, int g, int b, int a) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -34,19 +46,19 @@ public class Vertex {
         return z;
     }
 
-    public float getR() {
+    public int getR() {
         return r;
     }
 
-    public float getG() {
+    public int getG() {
         return g;
     }
 
-    public float getB() {
+    public int getB() {
         return b;
     }
 
-    public float getA() {
+    public int getA() {
         return a;
     }
 
@@ -68,7 +80,7 @@ public class Vertex {
         this.z = z;
     }
 
-    public void setColor(float r, float g, float b, float a) {
+    public void setColor(int r, int g, int b, int a) {
         this.r = r;
         this.g = g;
         this.b = b;

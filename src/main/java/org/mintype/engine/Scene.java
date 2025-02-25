@@ -73,10 +73,14 @@ public class Scene extends JPanel implements Runnable {
                 int[] xPoints = new int[]{ v1.getX(), v2.getX(), v3.getX() };
                 int[] yPoints = new int[]{ v1.getY(), v2.getY(), v3.getY() };
 
-                System.out.println(Arrays.toString(xPoints));
-                System.out.println(Arrays.toString(yPoints));
-                System.out.println();
+//                System.out.println(Arrays.toString(xPoints));
+//                System.out.println(Arrays.toString(yPoints));
+//                System.out.println();
 
+//                g.setColor(v1.getColor());
+                g.setColor(new Color(v1.getR(), v1.getG(), v1.getB()));
+                g.fillPolygon(xPoints, yPoints, 3);
+                g.setColor(Color.RED);
                 g.drawPolygon(xPoints, yPoints, 3);
             }
         }

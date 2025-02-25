@@ -1,5 +1,7 @@
 package org.mintype.engine;
 
+import java.awt.*;
+
 public class Cube {
     private Vertex[] vertices;
     private Vertex2D[] vertices2D;
@@ -7,6 +9,11 @@ public class Cube {
     private int[] indices;
 
     private int scale, shift;
+
+    float centerX = 0;
+    float centerY = 0;
+    float centerZ = 0;
+
 
     public Cube(Vertex[] vertices, int[] indices) {
         this.vertices = vertices;
@@ -16,13 +23,29 @@ public class Cube {
         scale = 100;
         shift = 200;
 
+
+        for (Vertex vertex : vertices) {
+            centerX += vertex.getX();
+            centerY += vertex.getY();
+            centerZ += vertex.getZ();
+        }
+        centerX /= vertices.length;
+        centerY /= vertices.length;
+        centerZ /= vertices.length;
+
         generate2DVertices();
     }
 
     public void generate2DVertices() {
+
+        System.out.println("Vertex:\n" + vertices[0] + "\n\n");
+
         for (int i = 0; i < vertices.length; i++) {
             float z = vertices[i].getZ() == 0 ? 0.0001f : vertices[i].getZ(); // Avoid division by zero
-            vertices2D[i] = new Vertex2D((int) (vertices[i].getX() / z * scale + shift), (int) (vertices[i].getY() / z * scale + shift));
+            Color color = vertices[i].getColor();
+//            if(color != null)
+//                System.out.println(color.toString());
+            vertices2D[i] = new Vertex2D((int) (vertices[i].getX() / z * scale + shift), (int) (vertices[i].getY() / z * scale + shift), Color.GREEN);
         }
     }
 
@@ -43,18 +66,25 @@ public class Cube {
         double cosAngle = Math.cos(angle);
         double sinAngle = Math.sin(angle);
 
-        // Rotate each vertex around the X-axis
+        // Translate each vertex to the origin (cube's center)
         for (int i = 0; i < vertices.length; i++) {
             Vertex vertex = vertices[i];
 
-            // Apply X-axis rotation
-            double newY = cosAngle * vertex.getY() - sinAngle * vertex.getZ();
-            double newZ = sinAngle * vertex.getY() + cosAngle * vertex.getZ();
+            // Translate to the origin
+            double x = vertex.getX() - centerX;  // centerX is the cube's center X
+            double y = vertex.getY() - centerY;  // centerY is the cube's center Y
+            double z = vertex.getZ() - centerZ;  // centerZ is the cube's center Z
 
-            // Update the vertex (keeping X unchanged as it's a rotation around the X-axis)
-            vertices[i].setY((float) newY);
-            vertices[i].setZ((float) newZ);
+            // Apply X-axis rotation
+            double newY = cosAngle * y - sinAngle * z;
+            double newZ = sinAngle * y + cosAngle * z;
+
+            // Translate back to original position
+            vertex.setX((float) (x + centerX));
+            vertex.setY((float) (newY + centerY));
+            vertex.setZ((float) (newZ + centerZ));
         }
+
         this.generate2DVertices();
     }
 
@@ -63,18 +93,25 @@ public class Cube {
         double cosAngle = Math.cos(angle);
         double sinAngle = Math.sin(angle);
 
-        // Rotate each vertex around the Y-axis
+        // Translate each vertex to the origin (cube's center)
         for (int i = 0; i < vertices.length; i++) {
             Vertex vertex = vertices[i];
 
-            // Apply Y-axis rotation
-            double newX = cosAngle * vertex.getX() + sinAngle * vertex.getZ();
-            double newZ = -sinAngle * vertex.getX() + cosAngle * vertex.getZ();
+            // Translate to the origin
+            double x = vertex.getX() - centerX;  // centerX is the cube's center X
+            double y = vertex.getY() - centerY;  // centerY is the cube's center Y
+            double z = vertex.getZ() - centerZ;  // centerZ is the cube's center Z
 
-            // Update the vertex (keeping Y unchanged as it's a rotation around the Y-axis)
-            vertices[i].setX((float) newX);
-            vertices[i].setZ((float) newZ);
+            // Apply Y-axis rotation
+            double newX = cosAngle * x + sinAngle * z;
+            double newZ = -sinAngle * x + cosAngle * z;
+
+            // Translate back to original position
+            vertex.setX((float) (newX + centerX));
+            vertex.setY((float) (y + centerY));  // Y remains unchanged for Y-axis rotation
+            vertex.setZ((float) (newZ + centerZ));
         }
+
         this.generate2DVertices();
     }
 
@@ -83,18 +120,26 @@ public class Cube {
         double cosAngle = Math.cos(angle);
         double sinAngle = Math.sin(angle);
 
-        // Rotate each vertex around the Z-axis
+        // Translate each vertex to the origin (cube's center)
         for (int i = 0; i < vertices.length; i++) {
             Vertex vertex = vertices[i];
 
-            // Apply Z-axis rotation
-            double newX = cosAngle * vertex.getX() - sinAngle * vertex.getY();
-            double newY = sinAngle * vertex.getX() + cosAngle * vertex.getY();
+            // Translate to the origin
+            double x = vertex.getX() - centerX;  // centerX is the cube's center X
+            double y = vertex.getY() - centerY;  // centerY is the cube's center Y
+            double z = vertex.getZ() - centerZ;  // centerZ is the cube's center Z
 
-            // Update the vertex (keeping Z unchanged as it's a rotation around the Z-axis)
-            vertices[i].setX((float) newX);
-            vertices[i].setY((float) newY);
+            // Apply Z-axis rotation
+            double newX = cosAngle * x - sinAngle * y;
+            double newY = sinAngle * x + cosAngle * y;
+
+            // Translate back to original position
+            vertex.setX((float) (newX + centerX));
+            vertex.setY((float) (newY + centerY));
+            vertex.setZ((float) (z + centerZ));  // Z remains unchanged for Z-axis rotation
         }
+
         this.generate2DVertices();
     }
+
 }
